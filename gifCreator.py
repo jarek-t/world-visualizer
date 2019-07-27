@@ -57,12 +57,9 @@ class TextVisualizer:
   def setSource(self, newSource): self.source = newSource
 
   def __init__(self, styles = False):
-    self.backgroundURI = "bg.png" if not isinstance(styles, dict) or "bg" not in styles else styles["bg"]
-    # self.background = Image.open(self.backgroundURI)
-    
-    background = Image.open(self.backgroundURI)
+    self.backgroundURI = "bg.png" if not isinstance(styles, dict) or "bg" not in styles else styles["bg"]    
 
-    self.titleY = background.size[1] * (10 if not isinstance(styles, dict) or "titleFootprint" not in styles else styles["titleFootprint"])/100
+    self.titleY = (Image.open(self.backgroundURI)).size[1] * (10 if not isinstance(styles, dict) or "titleFootprint" not in styles else styles["titleFootprint"])/100
     
     for s in ["colors", "fonts"]:
       if isinstance(styles, dict) and isinstance(styles[s], dict) and s in styles:
@@ -81,7 +78,7 @@ class BatchTextVisualizer:
   writer = TextVisualizer()
 
   def outOfRange(self, index): 
-    return index < 0 or index > len(self.targets) - 1
+    return index < 0 or index > len(self.targets)
 
   def getTargets(self, dn = False):
     if not dn: return False
@@ -126,9 +123,9 @@ class BatchTextVisualizer:
     for fn in os.listdir('out'):
       images.append(imageio.imread('out/'+fn))
 
-    imageio.mimsave('out.gif', images, 'GIF-FI', duration = .04)
+    imageio.mimsave('out.gif', images, 'GIF-FI', duration = .25)
 
-  def convertAll(self): self.convertRange(0, len(self.targets) - 1)
+  def convertAll(self): self.convertRange(0, len(self.targets))
 
   def export(self):
     count = 0
