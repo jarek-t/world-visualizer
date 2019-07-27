@@ -15,6 +15,7 @@ class TextVisualizer:
   source = False
   out = False
 
+  backgroundURI = False
   background = False
   write = False
 
@@ -29,6 +30,8 @@ class TextVisualizer:
   }
 
   def convert(self, source):
+    background = Image.open(self.backgroundURI)
+    write = ImageDraw.Draw(background)
     self.ready(source)
     
     count = 0
@@ -38,13 +41,11 @@ class TextVisualizer:
       # print(yPos)
       location = (50, yPos)
 
-      self.write.text(location, line, font=self.fonts["prim"], fill=self.colors["prim"])
+      write.text(location, line, font=self.fonts["prim"], fill=self.colors["prim"])
 
       count += 1
 
-    self.background.save('what.png')
-
-    return self.background
+    return background
 
   def ready(self, source):
     self.source = [line[0:-1] for line in source]
@@ -56,10 +57,12 @@ class TextVisualizer:
   def setSource(self, newSource): self.source = newSource
 
   def __init__(self, styles = False):
-    self.background = Image.open("bg.png" if not isinstance(styles, dict) or "bg" not in styles else styles["bg"])
-    self.write = ImageDraw.Draw(self.background)
+    self.backgroundURI = "bg.png" if not isinstance(styles, dict) or "bg" not in styles else styles["bg"]
+    # self.background = Image.open(self.backgroundURI)
+    
+    background = Image.open(self.backgroundURI)
 
-    self.titleY = self.background.size[1] * (10 if not isinstance(styles, dict) or "titleFootprint" not in styles else styles["titleFootprint"])/100
+    self.titleY = background.size[1] * (10 if not isinstance(styles, dict) or "titleFootprint" not in styles else styles["titleFootprint"])/100
     
     for s in ["colors", "fonts"]:
       if isinstance(styles, dict) and isinstance(styles[s], dict) and s in styles:
@@ -114,8 +117,16 @@ class BatchTextVisualizer:
       imgName = './out/'+str(t)+'.png' 
       img.save(imgName)
 
+      img.close()
+
       progress.next()
     progress.finish()
+
+    images = []
+    for fn in os.listdir('out'):
+      images.append(imageio.imread('out/'+fn))
+
+    imageio.mimsave('out.gif', images, 'GIF-FI', duration = .04)
 
   def convertAll(self): self.convertRange(0, len(self.targets) - 1)
 
