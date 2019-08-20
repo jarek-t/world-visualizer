@@ -1,0 +1,45 @@
+{
+    "colors": {
+        "prim": "000000",
+        "bg": "ffffff"
+    },
+    
+    "fonts": {
+        "prim": "bin/fonts/Roboto-Medium.ttf",
+        "title": "bin/fonts/Roboto-Bold.ttf"
+    },
+    
+    "header": 7.5,
+    "headContent": [
+        {
+            "txt": "Made with Text Visualizer",
+            "font": "title"
+        }
+    ],
+    
+    "footer": 7.5,
+    "footContent": [
+        {
+            "txt": "Text Visualizer made by Jarek Troyer",
+            "font": "title"
+        },
+        {
+            "txt": "https://github.com/jarek-t/world-visualizer",
+            "font": "prim"
+        }
+    ],
+
+    "padding": 2.5,
+    "size": [1000, 1000],
+
+    "out": "visualized.gif",
+    "srcDir": "source",
+
+    "startName": null,
+    "endName": null,
+    "startFrame": 0,
+    "endFrame": -1,
+    
+    "totalDuration": null,
+    "timePerFrame": 0.25
+}
